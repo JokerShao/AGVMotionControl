@@ -63,7 +63,7 @@ plot([corner_br(1) corner_br(1)+v1(1)], [corner_br(2) corner_br(2)+v1(2)], '-*g'
 hold on;
 line([corner_br(1) corner_br(1)+r1(1)], [corner_br(2) corner_br(2)+r1(2)], 'Color', 'Red', 'LineStyle', '-.');
 
-% top right wheel
+% bottom left wheel
 d2 = [cos(w2(2)), sin(w2(2))];
 d2_norm = d2 / norm(d2);
 v2 = w2(1)*d2_norm*0.5;
@@ -73,7 +73,7 @@ plot([corner_bl(1) corner_bl(1)+v2(1)], [corner_bl(2) corner_bl(2)+v2(2)], '-*g'
 hold on;
 line([corner_bl(1) corner_bl(1)+r2(1)], [corner_bl(2) corner_bl(2)+r2(2)], 'Color', 'Red', 'LineStyle', '-.');
 
-% top left wheel
+% top right wheel
 d3 = [cos(w3(2)), sin(w3(2))];
 d3_norm = d3 / norm(d3);
 v3 = w3(1)*d3_norm*0.5;
@@ -89,5 +89,29 @@ line([corner_tr(1) corner_tr(1)+r3(1)], [corner_tr(2) corner_tr(2)+r3(2)], 'Colo
 
 axis equal;
 
+
+cross_x = [r(1) corner_tl(1)+r0(1) corner_br(1)+r1(1)];% corner_bl(1)+r2(1) corner_tr(1)+r3(1)];
+cross_y = [r(2) corner_tl(2)+r0(2) corner_br(2)+r1(2)];% corner_bl(2)+r2(2) corner_tr(2)+r3(2)];
+is_cross = check_cross(cross_x, cross_y);
+
+if ~is_cross
+    disp('not cross');
 end
+
+end
+
+
+function is_cross = check_cross(cross_x, cross_y)
+
+    x_is_cross = (norm(cross_x - mean(cross_x)) < 1e-9);
+    y_is_cross = (norm(cross_y - mean(cross_y)) < 1e-9);
+    is_cross = x_is_cross && y_is_cross;
+end
+
+
+
+
+
+
+
 

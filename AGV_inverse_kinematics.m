@@ -20,14 +20,14 @@ end
 %%
 v0 = sqrt(v^2+d^2*omega^2/4-d*v*omega*cos(theta+alpha));
 v1 = sqrt(v^2+d^2*omega^2/4+d*v*omega*cos(theta+alpha));
-% v1 = sqrt(v^2+d^2*omega^2/4+d*abs(v*omega)*cos(theta-alpha));
-% v0 = sqrt(v^2+d^2*omega^2/4-d*abs(v*omega)*cos(theta-alpha));
+v2 = sqrt(v^2+d^2*omega^2/4-d*v*omega*cos(theta-alpha));
+v3 = sqrt(v^2+d^2*omega^2/4+d*v*omega*cos(theta-alpha));
 
 r_scale = abs(v/omega);
-% r0_scale = sqrt((v/omega)^2+(d/2)^2-d*v/omega*cos(theta-alpha));
-% r1_scale = sqrt((v/omega)^2+(d/2)^2+d*v/omega*cos(theta-alpha));
 r0_scale = sqrt((v/omega)^2+(d/2)^2-d*v/omega*cos(theta+alpha));
 r1_scale = sqrt((v/omega)^2+(d/2)^2+d*v/omega*cos(theta+alpha));
+r2_scale = sqrt((v/omega)^2+(d/2)^2-d*v/omega*cos(theta-alpha));
+r3_scale = sqrt((v/omega)^2+(d/2)^2+d*v/omega*cos(theta-alpha));
 
 % spin around
 if abs(v) < 1e-3
@@ -36,75 +36,60 @@ if abs(v) < 1e-3
     if omega > 0
         wheel0 = [v0 pi-lambda];
         wheel1 = [v1 -lambda];
+        wheel2 = [v2 -(pi-lambda)];
+        wheel3 = [v3 lambda];
 
         r = calculate_radius(r_scale, alpha+pi/2);
         r0 = calculate_radius(r0_scale, pi-lambda+pi/2);
         r1 = calculate_radius(r1_scale, -lambda+pi/2);
+        r2 = calculate_radius(r2_scale, -(pi-lambda)+pi/2);
+        r3 = calculate_radius(r3_scale, lambda+pi/2);
     else
         wheel0 = [v0 -lambda];
         wheel1 = [v1 pi-lambda];
+        wheel2 = [v2 lambda];
+        wheel3 = [v3 -(pi-lambda)];
 
         r = calculate_radius(r_scale, alpha-pi/2);
         r0 = calculate_radius(r0_scale, -lambda-pi/2);
         r1 = calculate_radius(r1_scale, pi-lambda-pi/2);
+        r2 = calculate_radius(r2_scale, lambda-pi/2);
+        r3 = calculate_radius(r3_scale, -(pi-lambda)-pi/2);
     end
     return
 end
 
 
 %%
-if (alpha >= -theta) && (alpha <= pi-theta)
-    if (omega < 0)
-        beta = -(pi/2 - theta - alpha);
-        beta0 = -atan( (d/2+r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-        alpha0 = pi/2-theta+beta0;
-        beta1 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-        alpha1 = pi/2-theta+beta1;
-    elseif (omega > 0)
-        beta = -(pi/2 - theta - alpha);
-        beta0 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-        alpha0 = pi/2-theta+beta0;
-        beta1 = -atan( (d/2+r_scale*sin(-beta)) / (r_scale*cos(-beta)) );
-        alpha1 = pi/2-theta+beta1;
+beta = -(pi/2 - theta - alpha);
+
+if (omega < 0)
+    beta0 = -atan( (d/2+r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
+    beta1 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
+    if ((alpha > pi-theta) && (alpha <= pi)) || ...
+            ((alpha >= -pi) && (alpha < -theta) && (beta0 > 0))
+        beta0 = beta0 + pi;
+    end
+    if ((alpha > pi-theta) && (alpha <= pi) && (beta1 < 0)) || ...
+            ((alpha >= -pi) && (alpha < -theta))
+        beta1 = beta1 + pi;
     end
 
-else
-    if (omega < 0)
-        beta = -(pi/2 - theta - alpha);
-        beta0 = -atan( (d/2+r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-        if (alpha > pi-theta) && (alpha <= pi)% && (beta0 < 0)
-            beta0 = beta0 + pi;
-        elseif (alpha >= -pi) && (alpha < -theta) && (beta0 > 0)
-            beta0 = beta0 + pi;
-        end
-        alpha0 = pi/2-theta+beta0;
-
-        beta1 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-        if (alpha > pi-theta) && (alpha <= pi) && (beta1 < 0)
-            beta1 = beta1 + pi;
-        elseif (alpha >= -pi) && (alpha < -theta)% && (beta1 < 0)
-            beta1 = beta1 + pi;
-        end
-        alpha1 = pi/2-theta+beta1;
-    elseif (omega > 0)
-        beta = -(pi/2 - theta - alpha);
-        beta0 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-        if (alpha > pi-theta) && (alpha <= pi)% && (beta0 < 0)
-            beta0 = beta0 + pi;
-        elseif (alpha >= -pi) && (alpha < -theta)% && (beta0 > 0)
-            beta0 = beta0 + pi;
-        end
-        alpha0 = pi/2-theta+beta0;
-
-        beta1 = -atan( (d/2+r_scale*sin(-beta)) / (r_scale*cos(-beta)) );
-        if (alpha > pi-theta) && (alpha <= pi)% && (beta1 < 0)
-            beta1 = beta1 + pi;
-        elseif (alpha >= -pi) && (alpha < -theta)% && (beta1 > 0)
-            beta1 = beta1 + pi;
-        end
-        alpha1 = pi/2-theta+beta1;
+elseif (omega > 0)
+    beta0 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
+    beta1 = -atan( (d/2+r_scale*sin(-beta)) / (r_scale*cos(-beta)) );
+    if ((alpha > pi-theta) && (alpha <= pi)) || ...
+            ((alpha >= -pi) && (alpha < -theta))
+        beta0 = beta0 + pi;
+    end
+    if ((alpha > pi-theta) && (alpha <= pi)) || ...
+            ((alpha >= -pi) && (alpha < -theta))
+        beta1 = beta1 + pi;
     end
 end
+
+alpha0 = pi/2-theta+beta0;
+alpha1 = pi/2-theta+beta1;
 
 wheel0 = [v0 alpha0];
 wheel1 = [v1 alpha1];
