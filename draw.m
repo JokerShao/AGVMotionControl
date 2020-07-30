@@ -1,5 +1,6 @@
-function draw(idx_w, d, chassis_w, chassis_h, chassis_v, chassis_alpha, ...
-                w0, w1, w2, w3, r, r0, r1, r2, r3)
+function draw( ...
+    idx_w, d, chassis_w, chassis_h, chassis_v, chassis_alpha, ...
+    w0, w1, w2, w3, r, r0, r1, r2, r3)
 %
 %   2    0  Y
 %           |_X
@@ -83,13 +84,10 @@ hold on;
 line([corner_tr(1) corner_tr(1)+r3(1)], [corner_tr(2) corner_tr(2)+r3(2)], 'Color', 'Red', 'LineStyle', '-.');
 
 
-line([0 2], [0, 2], 'LineStyle', '--');
-
 % xlim([-1.5 1.5]);
 % ylim([-1.5 1.5]);
 
 axis equal;
 
 end
-
 
