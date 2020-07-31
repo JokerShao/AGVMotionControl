@@ -1,4 +1,4 @@
-function draw( ...
+function draw_ik( ...
     idx_w, d, chassis_w, chassis_h, chassis_v, chassis_alpha, ...
     w0, w1, w2, w3, r, r0, r1, r2, r3)
 %
@@ -34,7 +34,7 @@ plot(corner(:,1), corner(:,2), '-*b');
 % vehicle speed
 dd = [cos(chassis_alpha), sin(chassis_alpha)];
 dd_norm = dd/norm(dd);
-vv = chassis_v*dd_norm * 0.5; % scale 0.1
+vv = chassis_v*dd_norm * 0.5; % scale 0.5
 hold on;
 plot([car_center(1) vv(1)], [car_center(2) vv(2)], '-*r');
 hold on;
@@ -89,24 +89,9 @@ line([corner_tr(1) corner_tr(1)+r3(1)], [corner_tr(2) corner_tr(2)+r3(2)], 'Colo
 
 axis equal;
 
-
-cross_x = [r(1) corner_tl(1)+r0(1) corner_br(1)+r1(1)];% corner_bl(1)+r2(1) corner_tr(1)+r3(1)];
-cross_y = [r(2) corner_tl(2)+r0(2) corner_br(2)+r1(2)];% corner_bl(2)+r2(2) corner_tr(2)+r3(2)];
-is_cross = check_cross(cross_x, cross_y);
-
-if ~is_cross
-    disp('not cross');
-end
-
 end
 
 
-function is_cross = check_cross(cross_x, cross_y)
-
-    x_is_cross = (norm(cross_x - mean(cross_x)) < 1e-9);
-    y_is_cross = (norm(cross_y - mean(cross_y)) < 1e-9);
-    is_cross = x_is_cross && y_is_cross;
-end
 
 
 

@@ -61,23 +61,23 @@ end
 
 
 %%
-beta = -(pi/2 - theta - alpha);
-
+% 0, 1
+beta = -(pi/2 - theta - alpha);  % 这个等写完2 3 轮子统一一下
 if (omega < 0)
     beta0 = -atan( (d/2+r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
     beta1 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
     if ((alpha > pi-theta) && (alpha <= pi)) || ...
-            ((alpha >= -pi) && (alpha < -theta) && (beta0 > 0))
+            ((alpha >= -pi) && (alpha < -theta))% && (beta0 > 0))
         beta0 = beta0 + pi;
     end
-    if ((alpha > pi-theta) && (alpha <= pi) && (beta1 < 0)) || ...
+    if ((alpha > pi-theta) && (alpha <= pi)) || ... % && (beta1 < 0)) || ...
             ((alpha >= -pi) && (alpha < -theta))
         beta1 = beta1 + pi;
     end
 
 elseif (omega > 0)
     beta0 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-    beta1 = -atan( (d/2+r_scale*sin(-beta)) / (r_scale*cos(-beta)) );
+    beta1 = -atan( (d/2+r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
     if ((alpha > pi-theta) && (alpha <= pi)) || ...
             ((alpha >= -pi) && (alpha < -theta))
         beta0 = beta0 + pi;
@@ -88,13 +88,46 @@ elseif (omega > 0)
     end
 end
 
+% 2, 3
+beta = (pi/2 - theta + alpha);
+if (omega > 0)
+    beta2 = -atan( (d/2-r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
+    beta3 = atan( (d/2+r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
+    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
+         (alpha > theta) && (alpha <= pi) )
+        beta2 = beta2+pi;
+    end
+    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
+         (alpha >= theta) && (alpha <= pi) )
+        beta3 = beta3+pi;
+    end
+
+elseif (omega < 0)
+    beta2 = atan( (d/2+r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
+    beta3 = -atan( (d/2-r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
+    
+    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
+         (alpha > theta) && (alpha <= pi) )
+        beta2 = beta2+pi;
+    end
+    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
+         (alpha >= theta) && (alpha <= pi) )
+        beta3 = beta3+pi;
+    end
+end
+
+
+
+
 alpha0 = pi/2-theta+beta0;
 alpha1 = pi/2-theta+beta1;
+alpha2 = beta2 + theta - pi/2;
+alpha3 = beta3 + theta - pi/2;
 
 wheel0 = [v0 alpha0];
 wheel1 = [v1 alpha1];
-wheel2 = [0 0];
-wheel3 = [0 0];
+wheel2 = [v2 alpha2];
+wheel3 = [v3 alpha3];
 
 
 %%
@@ -102,14 +135,29 @@ if sign(omega) >= 0
     r = calculate_radius(r_scale, alpha+pi/2);
     r0 = calculate_radius(r0_scale, alpha0+pi/2);
     r1 = calculate_radius(r1_scale, alpha1+pi/2);
+    r2 = calculate_radius(r2_scale, alpha2+pi/2);
+    r3 = calculate_radius(r3_scale, alpha3+pi/2);
 else
     r = calculate_radius(r_scale, alpha-pi/2);
     r0 = calculate_radius(r0_scale, alpha0-pi/2);
     r1 = calculate_radius(r1_scale, alpha1-pi/2);
+    r2 = calculate_radius(r2_scale, alpha2-pi/2);
+    r3 = calculate_radius(r3_scale, alpha3-pi/2);
 end
 
-r2 = [0 0 0];
-r3 = [0 0 0];
+
+
+
+% r0 = [0 0 0];
+% r1 = [0 0 0];
+% r2 = [0 0 0];
+% r3 = [0 0 0];
+% 
+% wheel0 = [0 0];
+% wheel1 = [0 0];
+% wheel2 = [0 0];
+% wheel3 = [0 0];
+
 
 end
 
