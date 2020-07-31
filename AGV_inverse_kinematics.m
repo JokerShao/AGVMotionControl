@@ -62,61 +62,34 @@ end
 
 %%
 % 0, 1
-beta = -(pi/2 - theta - alpha);  % 这个等写完2 3 轮子统一一下
+beta = alpha - (pi/2-theta);
 if (omega < 0)
     beta0 = -atan( (d/2+r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
     beta1 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-    if ((alpha > pi-theta) && (alpha <= pi)) || ...
-            ((alpha >= -pi) && (alpha < -theta))% && (beta0 > 0))
-        beta0 = beta0 + pi;
-    end
-    if ((alpha > pi-theta) && (alpha <= pi)) || ... % && (beta1 < 0)) || ...
-            ((alpha >= -pi) && (alpha < -theta))
-        beta1 = beta1 + pi;
-    end
-
 elseif (omega > 0)
     beta0 = atan( (d/2-r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
     beta1 = -atan( (d/2+r_scale*cos(pi/2+beta)) / (r_scale*sin(pi/2+beta)) );
-    if ((alpha > pi-theta) && (alpha <= pi)) || ...
-            ((alpha >= -pi) && (alpha < -theta))
-        beta0 = beta0 + pi;
-    end
-    if ((alpha > pi-theta) && (alpha <= pi)) || ...
-            ((alpha >= -pi) && (alpha < -theta))
-        beta1 = beta1 + pi;
-    end
+end
+if ((alpha > pi-theta) && (alpha <= pi)) || ...
+        ((alpha >= -pi) && (alpha < -theta))
+    beta0 = beta0 + pi;
+    beta1 = beta1 + pi;
 end
 
 % 2, 3
-beta = (pi/2 - theta + alpha);
+beta = alpha + (pi/2-theta);
 if (omega > 0)
     beta2 = -atan( (d/2-r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
     beta3 = atan( (d/2+r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
-    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
-         (alpha > theta) && (alpha <= pi) )
-        beta2 = beta2+pi;
-    end
-    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
-         (alpha >= theta) && (alpha <= pi) )
-        beta3 = beta3+pi;
-    end
-
 elseif (omega < 0)
     beta2 = atan( (d/2+r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
     beta3 = -atan( (d/2-r_scale*cos(pi/2-beta)) / (r_scale*sin(pi/2-beta)) );
-    
-    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
-         (alpha > theta) && (alpha <= pi) )
-        beta2 = beta2+pi;
-    end
-    if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
-         (alpha >= theta) && (alpha <= pi) )
-        beta3 = beta3+pi;
-    end
 end
-
-
+if ( (alpha >= -pi) && (alpha < -(pi-theta)) || ...
+     (alpha > theta) && (alpha <= pi) )
+    beta2 = beta2+pi;
+    beta3 = beta3+pi;
+end
 
 
 alpha0 = pi/2-theta+beta0;
