@@ -8,11 +8,11 @@ if abs(omega)<1e-5 % 0.54 degree
     wheel2 = [v alpha];
     wheel3 = [v alpha];
 
-    r = [0 0 0];
-    r0 = [0 0 0];
-    r1 = [0 0 0];
-    r2 = [0 0 0];
-    r3 = [0 0 0];
+    r = [0 0];
+    r0 = [0 0];
+    r1 = [0 0];
+    r2 = [0 0];
+    r3 = [0 0];
     return
 end
 
@@ -97,10 +97,10 @@ alpha1 = pi/2-theta+beta1;
 alpha2 = beta2 + theta - pi/2;
 alpha3 = beta3 + theta - pi/2;
 
-wheel0 = [v0 alpha0];
-wheel1 = [v1 alpha1];
-wheel2 = [v2 alpha2];
-wheel3 = [v3 alpha3];
+wheel0 = [v0 clamp(alpha0)];
+wheel1 = [v1 clamp(alpha1)];
+wheel2 = [v2 clamp(alpha2)];
+wheel3 = [v3 clamp(alpha3)];
 
 
 %%
@@ -147,10 +147,14 @@ function r = calculate_radius(r_scale, alpha)
     r = direction*r_scale;
 end
 
-
-
-
-
+% clamp alpha to range -pi ~ pi
+function alpha0 = clamp(alpha0)
+    if alpha0 > pi
+        alpha0 = alpha0-2*pi;
+    elseif alpha0 < -pi
+        alpha0 = alpha0 + 2*pi;
+    end
+end
 
 
 

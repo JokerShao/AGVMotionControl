@@ -1,6 +1,6 @@
 function draw_ik( ...
     idx_w, d, chassis_w, chassis_h, chassis_v, chassis_alpha, ...
-    w0, w1, w2, w3, r, r0, r1, r2, r3)
+    w0, w1, w2, w3, r, r0, r1, r2, r3, X)
 %
 %   2    0  Y
 %           |_X
@@ -86,6 +86,13 @@ line([corner_tr(1) corner_tr(1)+r3(1)], [corner_tr(2) corner_tr(2)+r3(2)], 'Colo
 
 % xlim([-1.5 1.5]);
 % ylim([-1.5 1.5]);
+
+
+% center and radius predict
+line([corner_tl(1) X(1)], [corner_tl(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
+line([corner_br(1) X(1)], [corner_br(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
+line([corner_bl(1) X(1)], [corner_bl(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
+line([corner_tr(1) X(1)], [corner_tr(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
 
 axis equal;
 
