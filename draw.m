@@ -1,5 +1,5 @@
-function draw_ik( ...
-    idx_w, d, chassis_w, chassis_h, chassis_v, chassis_alpha, ...
+function draw( ...
+    idx_w, chassis_w, chassis_h, chassis_v, chassis_alpha, ...
     w0, w1, w2, w3, r, r0, r1, r2, r3, X)
 %
 %   2    0  Y
@@ -8,9 +8,9 @@ function draw_ik( ...
 
 
 %%
-% figure;
+figure;
 hold on;
-subplot(4, 4, idx_w)
+% subplot(4, 4, idx_w)
 
 % x axis
 hold on;

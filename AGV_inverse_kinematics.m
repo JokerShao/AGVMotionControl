@@ -1,7 +1,7 @@
 function [wheel0, wheel1, wheel2, wheel3, ...
             r, r0, r1, r2, r3] = AGV_inverse_kinematics( ...
             d, chassis_w, chassis_h, theta, v, omega, alpha)
-%% forward, backward, leftward, rightward, translation without rotate
+%% forward, backward, leftward, rightward, translate without rotation
 if abs(omega)<1e-5 % 0.54 degree
     wheel0 = [v alpha];
     wheel1 = [v alpha];
@@ -118,9 +118,6 @@ else
     r3 = calculate_radius(r3_scale, alpha3-pi/2);
 end
 
-
-
-
 % r0 = [0 0 0];
 % r1 = [0 0 0];
 % r2 = [0 0 0];
@@ -130,7 +127,6 @@ end
 % wheel1 = [0 0];
 % wheel2 = [0 0];
 % wheel3 = [0 0];
-
 
 end
 
@@ -147,14 +143,7 @@ function r = calculate_radius(r_scale, alpha)
     r = direction*r_scale;
 end
 
-% clamp alpha to range -pi ~ pi
-function alpha0 = clamp(alpha0)
-    if alpha0 > pi
-        alpha0 = alpha0-2*pi;
-    elseif alpha0 < -pi
-        alpha0 = alpha0 + 2*pi;
-    end
-end
+
 
 
 

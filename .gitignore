@@ -2,3 +2,5 @@ wheel/
 wheel.zip
 *~
 
+.DS_Store
+

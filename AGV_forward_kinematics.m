@@ -9,7 +9,7 @@ function chassis_state = AGV_forward_kinematics( ...
     wheels = [wheel0; wheel1; wheel2; wheel3];
 
 
-%% forward, backward, leftward, rightward, translation without rotate
+%% forward, backward, leftward, rightward, translate without rotation
 if norm(wheels(:,2)-mean(wheels(:,2))) < 1e-9
     chassis_state = [mean(wheels(:,1)) 0 mean(wheels(:,2)) 0 0 0 0];
     return
@@ -45,10 +45,6 @@ X = V(:,3);
 X = (X(1:2)/X(3))';
 error = D(3,3);
 
-
-
-
-%     chassis_state: v omega alpha r_scale X error
 car_center = [0 0];
 corner_tl = [chassis_h/2 chassis_w/2];
 corner_tr = [chassis_h/2 -chassis_w/2];
@@ -66,10 +62,9 @@ phi0 = acos(dot([1 0], r0_normalized));
 if r0_normalized(2)<0
     phi0=-phi0;
 end
-if abs(phi0 - clamp(wheels(1,2)-pi/2)) < 1e-9
+if fiseq(clamp(phi0-wheels(1,2)), -pi/2)
     omega=-omega;
 end
-
 
 r = X-car_center;
 r_normalized = r/norm(r);
@@ -85,10 +80,8 @@ end
 
 v = abs(omega)*norm(r);
 
-
 chassis_state = [v omega clamp(alpha) norm(r) X error];
 
-
 end
 
 
@@ -98,21 +91,6 @@ end
 
 
 
-
-
-
-
-
-
-
-% clamp alpha to range -pi ~ pi
-function alpha0 = clamp(alpha0)
-    if alpha0 > pi
-        alpha0 = alpha0-2*pi;
-    elseif alpha0 < -pi
-        alpha0 = alpha0 + 2*pi;
-    end
-end
 
 
 
