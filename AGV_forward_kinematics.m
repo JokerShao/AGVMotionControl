@@ -24,10 +24,10 @@ alphas_positive = [pi-lambda; -lambda; -(pi-lambda); lambda];
 alphas_negative = [-lambda; pi-lambda; lambda; -(pi-lambda)];
 
 if norm(abs(wheels(:,2)-alphas_positive), 'inf') < 1e-9
-    chassis_state = [0 mean(wheels(:,1))/(d/2) 0 (d/2) 0 0 0];
+    chassis_state = [0 mean(wheels(:,1))/d 0 d 0 0 0];
     return
 elseif norm(abs(wheels(:,2)-alphas_negative), 'inf') < 1e-9
-    chassis_state = [0 -mean(wheels(:,1))/(d/2) 0 (d/2) 0 0 0];
+    chassis_state = [0 -mean(wheels(:,1))/d 0 d 0 0 0];
     return
 end
 
