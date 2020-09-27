@@ -10,8 +10,13 @@ function chassis_state = AGV_forward_kinematics( ...
 
 
 %% forward, backward, leftward, rightward, translate without rotation
-if norm(wheels(:,2)-mean(wheels(:,2))) < 1e-9
-    chassis_state = [mean(wheels(:,1)) 0 mean(wheels(:,2)) 0 0 0 0];
+if max(abs(wheels(:,2)-mean(wheels(:,2)))) < 1e-9
+    mean_v = mean(wheels(:,1));
+    if abs(mean_v) < 1e-9
+        chassis_state = zeros(1,7);
+    else
+        chassis_state = [mean_v 0 mean(wheels(:,2)) 0 0 0 0];
+    end
     return
 end
 
@@ -20,15 +25,18 @@ end
 % spin around
 lambda = atan(chassis_h/chassis_w);
 d = (sqrt(chassis_w^2+chassis_h^2)/2);
-alphas_positive = [pi-lambda; -lambda; -(pi-lambda); lambda];
-alphas_negative = [-lambda; pi-lambda; lambda; -(pi-lambda)];
+alphas = [-lambda; -lambda; lambda; lambda];
 
-if norm(abs(wheels(:,2)-alphas_positive), 'inf') < 1e-9
-    chassis_state = [0 mean(wheels(:,1))/d 0 d 0 0 0];
+if max(abs(wheels(:,2)-alphas)) < 1e-9
+    % mean absolute velocity
+    mav = mean(abs(wheels(:,1)));
+    if max(abs(wheels(:,1)-[-mav; mav; -mav; mav])) < 1e-9
+        chassis_state = [0 mav/d 0 0 0 0 0];
     return
-elseif norm(abs(wheels(:,2)-alphas_negative), 'inf') < 1e-9
-    chassis_state = [0 -mean(wheels(:,1))/d 0 d 0 0 0];
+    elseif max(abs(wheels(:,1)-[mav; -mav; mav; -mav])) < 1e-9
+        chassis_state = [0 -mav/d 0 0 0 0 0];
     return
+    end
 end
 
 
@@ -78,6 +86,7 @@ else
     alpha=phi+pi/2;
 end
 
+% scala and must >0, because we already have alpha to describe orientation.
 v = abs(omega)*norm(r);
 
 chassis_state = [v omega clamp(alpha) norm(r) X error];

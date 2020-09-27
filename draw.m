@@ -48,6 +48,7 @@ d0 = [cos(w0(2)), sin(w0(2))];
 d0_norm = d0 / norm(d0);
 v0 = w0(1)*d0_norm*0.5;
 hold on;
+% wheel speed
 plot([corner_tl(1) corner_tl(1)+v0(1)], [corner_tl(2) corner_tl(2)+v0(2)], '-*g');
 % draw radius
 hold on;
@@ -89,10 +90,11 @@ line([corner_tr(1) corner_tr(1)+r3(1)], [corner_tr(2) corner_tr(2)+r3(2)], 'Colo
 
 
 % center and radius predict
-line([corner_tl(1) X(1)], [corner_tl(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
-line([corner_br(1) X(1)], [corner_br(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
-line([corner_bl(1) X(1)], [corner_bl(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
-line([corner_tr(1) X(1)], [corner_tr(2) X(2)], 'Color', 'Black', 'LineStyle', '-.');
+scatter(X(1), X(2))
+line([corner_tl(1) X(1)], [corner_tl(2) X(2)], 'Color', 'Black', 'LineStyle', '--');
+line([corner_br(1) X(1)], [corner_br(2) X(2)], 'Color', 'Black', 'LineStyle', '--');
+line([corner_bl(1) X(1)], [corner_bl(2) X(2)], 'Color', 'Black', 'LineStyle', '--');
+line([corner_tr(1) X(1)], [corner_tr(2) X(2)], 'Color', 'Black', 'LineStyle', '--');
 
 axis equal;
 
