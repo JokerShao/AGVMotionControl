@@ -34,9 +34,9 @@ if abs(v) < 1e-3
     lambda = atan(chassis_h/chassis_w);
 
     if omega > 0
-        wheel0 = [v0 pi-lambda];
+        wheel0 = [-v0 -lambda];
         wheel1 = [v1 -lambda];
-        wheel2 = [v2 -(pi-lambda)];
+        wheel2 = [-v2 lambda];
         wheel3 = [v3 lambda];
 
         r = calculate_radius(r_scale, alpha+pi/2);
@@ -46,9 +46,9 @@ if abs(v) < 1e-3
         r3 = calculate_radius(r3_scale, lambda+pi/2);
     else
         wheel0 = [v0 -lambda];
-        wheel1 = [v1 pi-lambda];
+        wheel1 = [-v1 -lambda];
         wheel2 = [v2 lambda];
-        wheel3 = [v3 -(pi-lambda)];
+        wheel3 = [-v3 lambda];
 
         r = calculate_radius(r_scale, alpha-pi/2);
         r0 = calculate_radius(r0_scale, -lambda-pi/2);
