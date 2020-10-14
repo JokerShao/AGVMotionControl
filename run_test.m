@@ -23,18 +23,19 @@ for idx_h=1:size(omega_v, 2)
 %         fg = figure('Name', 'omega '+string(omega_v(idx_h)));
 %     end
 
+%     idx_h = 41;
     idx_h
-%     idx_h = 1;
+
     chassis_omega = omega_v(idx_h); % rad/s
     for idx_w=1:size(alpha_v, 2)
 
-%         idx_w
 %         idx_w = 1;
+%         idx_w
         chassis_alpha = alpha_v(idx_w); %rad
         for idx_c=1:size(velocity_v,2)
 
+%             idx_c = 1;
 %              idx_c
-%             idx_c = 2;
             chassis_v = velocity_v(idx_c); % m/s
             [w0, w1, w2, w3, gt_r, r0, r1, r2, r3] = AGV_inverse_kinematics( ...
                                                     d, chassis_w, chassis_h, chassis_theta, ...
@@ -52,7 +53,7 @@ for idx_h=1:size(omega_v, 2)
                 y1 = -chassis_w/2+r3(2);
             else
                 x1 = 0;
-                y1 = 0;
+                y1 = 1e9;
             end
 
             if chassis_v < 1e-9
