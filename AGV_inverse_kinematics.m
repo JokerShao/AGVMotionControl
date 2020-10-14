@@ -1,18 +1,19 @@
 function [wheel0, wheel1, wheel2, wheel3, ...
             r, r0, r1, r2, r3] = AGV_inverse_kinematics( ...
             d, chassis_w, chassis_h, theta, v, omega, alpha)
-%% forward, backward, leftward, rightward, translate without rotation
+% r equals icc position
+% forward, backward, leftward, rightward, translate without rotation
 if abs(omega)<1e-5 % 0.54 degree
     wheel0 = [v alpha];
     wheel1 = [v alpha];
     wheel2 = [v alpha];
     wheel3 = [v alpha];
 
-    r = [0 0];
-    r0 = [0 0];
-    r1 = [0 0];
-    r2 = [0 0];
-    r3 = [0 0];
+    r = [0 1e9];
+    r0 = [0 1e9];
+    r1 = [0 1e9];
+    r2 = [0 1e9];
+    r3 = [0 1e9];
     return
 end
 
@@ -30,7 +31,7 @@ r2_scale = sqrt((v/omega)^2+(d/2)^2-d*v/omega*cos(theta-alpha));
 r3_scale = sqrt((v/omega)^2+(d/2)^2+d*v/omega*cos(theta-alpha));
 
 % spin around
-if abs(v) < 1e-3
+if abs(v) < 1e-3  % 1mm/s
     lambda = atan(chassis_h/chassis_w);
 
     if omega > 0

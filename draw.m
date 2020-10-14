@@ -8,7 +8,7 @@ function draw( ...
 
 
 %%
-figure;
+% figure;
 hold on;
 % subplot(4, 4, idx_w)
 

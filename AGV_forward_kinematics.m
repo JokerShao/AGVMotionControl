@@ -5,17 +5,17 @@ function chassis_state = AGV_forward_kinematics( ...
 %     [v1, alpha1]
 %     [v2, alpha2]
 %     [v3, alpha3]
-%     chassis_state: v omega alpha r_scale X error
+%     chassis_state: v omega alpha r_scale icc_x icc_y error
     wheels = [wheel0; wheel1; wheel2; wheel3];
 
 
 %% forward, backward, leftward, rightward, translate without rotation
-if max(abs(wheels(:,2)-mean(wheels(:,2)))) < 1e-9
+if max(abs(wheels(:,2)-mean(wheels(:,2)))) < 0.0087 % 0.5 deg
     mean_v = mean(wheels(:,1));
     if abs(mean_v) < 1e-9
-        chassis_state = zeros(1,7);
+        chassis_state = [0 0 0 1e9 0 1e9 0];
     else
-        chassis_state = [mean_v 0 mean(wheels(:,2)) 0 0 0 0];
+        chassis_state = [mean_v 0 mean(wheels(:,2)) 1e9 0 1e9 0];
     end
     return
 end
@@ -70,7 +70,7 @@ phi0 = acos(dot([1 0], r0_normalized));
 if r0_normalized(2)<0
     phi0=-phi0;
 end
-if fiseq(clamp(phi0-wheels(1,2)), -pi/2)
+if fiseq(clamp(phi0-wheels(1,2)), -pi/2, 1e-9)
     omega=-omega;
 end
 

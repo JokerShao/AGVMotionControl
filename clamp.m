@@ -1,8 +1,8 @@
-% clamp alpha to range -pi ~ pi
+% clamp alpha to range (-pi, pi]
 function alpha = clamp(alpha)
-    if alpha > pi
+    if fisgt(alpha, pi, 1e-9)
         alpha = alpha-2*pi;
-    elseif alpha < -pi
+    elseif fisltoeq(alpha, -pi, 1e-9)
         alpha = alpha + 2*pi;
     end
 end
